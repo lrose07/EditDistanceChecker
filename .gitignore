@@ -407,3 +407,6 @@ Temporary Items
 .apdisk
 
 # End of https://www.gitignore.io/api/git,java,macos,intellij,jetbrains,intellij+iml,intellij+all,jetbrains+all,jetbrains+iml
+
+# Project specific
+*.txt
