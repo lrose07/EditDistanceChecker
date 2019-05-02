@@ -16,39 +16,27 @@ class DisChecker {
     }
 
     private void getInput() {
-        Scanner scan = new Scanner(System.in);
+        Scanner fileScan = new Scanner(System.in);
 
-        System.out.print("File name: ");
-        File file = new File(scan.next());
+        searchWord = fileScan.nextLine();
+        String editDistance = fileScan.nextLine();
+        String sWeights = fileScan.nextLine();
 
-        try {
-            Scanner fileScan = new Scanner(file);
-
-            searchWord = fileScan.nextLine();
-            String editDistance = fileScan.nextLine();
-            String sWeights = fileScan.nextLine();
-
-            while (fileScan.hasNextLine()) {
-                textLines.add(fileScan.nextLine());
-            }
-
-            parseEditDistance(editDistance);
-            parseWeights(sWeights);
-
-            for (String line : textLines) {
-                line = evaluateWordsPerLine(line);
-                System.out.println(line);
-            }
-
-            System.out.println(searchWord);
-            System.out.println(editDistance);
-            System.out.println(sWeights);
-
-
-
-        } catch (FileNotFoundException e) {
-            System.out.println("File not found");
+        while (fileScan.hasNextLine()) {
+            textLines.add(fileScan.nextLine());
         }
+
+        parseEditDistance(editDistance);
+        parseWeights(sWeights);
+
+        for (String line : textLines) {
+            line = processLine(line);
+            System.out.println(line);
+        }
+
+        System.out.println(searchWord);
+        System.out.println(editDistance);
+        System.out.println(sWeights);
     }
 
     private void parseEditDistance(String s) {
@@ -63,45 +51,12 @@ class DisChecker {
         }
     }
 
-    private String evaluateWordsPerLine(String line) {
-        String parsedLine;
-        String[] wordsInLine = line.split("\\s+");
-
-        for (int i = 0; i < wordsInLine.length; i++) {
-            if (wordContainsSpecialChars(wordsInLine[i])) {
-                wordsInLine[i] = processSpecialWord(wordsInLine[i]);
-            } else {
-                wordsInLine[i] = processNormalWord(wordsInLine[i]);
-            }
-        }
-
-        StringBuilder sb = new StringBuilder();
-
-        for (String word : wordsInLine) {
-            sb.append(word);
-            sb.append(" ");
-        }
-
-        parsedLine = sb.toString();
-
-        return parsedLine;
-    }
-
-    private boolean wordContainsSpecialChars(String word) {
-        for (int i = 0; i < word.length(); i++) {
-            if (word.substring(i, i+1).matches("[^a-zA-Z]")) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private String processSpecialWord(String word) {
+    private String processLine(String line) {
         StringBuilder sbMain = new StringBuilder();
         StringBuilder sbInternal = new StringBuilder();
         boolean wordBeingFormed = false;
-        for (int i = 0; i < word.length(); i++) {
-            String currentLetter = word.substring(i, i+1);
+        for (int i = 0; i < line.length(); i++) {
+            String currentLetter = line.substring(i, i+1);
             if (currentLetter.matches("[^a-zA-Z]")) {
                 if (wordBeingFormed) {
                     String wordToCheck = sbInternal.toString();
@@ -169,35 +124,9 @@ class DisChecker {
                             Math.min(dp[i - 1][j] + weights[2],  // Remove
                                     dp[i - 1][j - 1] + weights[3])); // Replace
                 }
-                System.out.print(dp[i][j] + " ");
             }
-            System.out.println();
         }
 
         return dp[m - 1][n - 1];
     }
 }
-
-
-
-// Recurrence:
-/*
-
-
-
-for: i = 0, j = 0 => c(i, j) = 0
-for: i, j > 0 => c(i, j):
-    1 + c(i - 1), j - 1), x(i) = y(j)
-    max(c(i - 1, j), c(i, j - 1)); otherwise
-
- */
-
-
-// Algorithm
-
-/*
-
-Array size:
-For each box:
-
- */
