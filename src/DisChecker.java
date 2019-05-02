@@ -138,7 +138,9 @@ class DisChecker {
                 } else if (j == 0) {
                     dp[i][j] = dp[i - 1][j] + weights[2];
                 } else if (str1.charAt(i) == str2.charAt(j)) {
-                    dp[i][j] = dp[i - 1][j - 1] + weights[0]; // Copy
+                    dp[i][j] = Math.min(dp[i][j - 1] + weights[1],  // Insert
+                            Math.min(dp[i - 1][j] + weights[2],  // Remove
+                                    dp[i - 1][j - 1] + weights[0])); // Copy
                 } else {
                     dp[i][j] = Math.min(dp[i][j - 1] + weights[1],  // Insert
                             Math.min(dp[i - 1][j] + weights[2],  // Remove
@@ -150,3 +152,4 @@ class DisChecker {
         return dp[m - 1][n - 1];
     }
 }
+
