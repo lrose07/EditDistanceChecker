@@ -1,8 +1,18 @@
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * @author Lauren Rose
+ * @version v0.1
+ *
+ * ITEC 360 - Data Structures and Analysis of Algorithms
+ * Department of Information Technology
+ * Radford University
+ *
+ * This program uses a dynamic programming algorithm
+ * to highlight words in a passage of text that are
+ * within a weighted edit distance of a search word.
+ */
 class DisChecker {
 
     private String searchWord;
@@ -11,10 +21,14 @@ class DisChecker {
 
     private ArrayList<String> textLines = new ArrayList<>();
 
+    /**
+     * Constructs a new DisChecker object
+     */
     DisChecker() {
         getInput();
     }
 
+    // gets input for processing
     private void getInput() {
         Scanner fileScan = new Scanner(System.in);
 
@@ -39,10 +53,12 @@ class DisChecker {
         System.out.println(sWeights);
     }
 
+    // parses the input max distance from a string to an int
     private void parseEditDistance(String s) {
         maxEditDistance = Integer.parseInt(s);
     }
 
+    // parses the input weights from strings to an int array
     private void parseWeights(String s) {
         String[] weightsAsStrings = s.split("\\s+");
         weights = new int[4];
@@ -51,6 +67,7 @@ class DisChecker {
         }
     }
 
+    // processes a single line of input
     private String processLine(String line) {
         StringBuilder sbMain = new StringBuilder();
         StringBuilder sbInternal = new StringBuilder();
@@ -81,6 +98,7 @@ class DisChecker {
         return sbMain.toString();
     }
 
+    // sends a single word for processing
     private String processNormalWord(String word) {
         if (isWithinDistance(word)) {
             return "(" + word + ")";
@@ -88,6 +106,7 @@ class DisChecker {
         return word;
     }
 
+    // returns if a word is within the edit distance
     private boolean isWithinDistance(String word) {
         if (word.length() == 0) {
             return false;
@@ -96,6 +115,7 @@ class DisChecker {
         }
     }
 
+    // runs algorithm on given word
     private int editDistDP(String word1, String word2) {
         String str1 = word1.toLowerCase();
         String str2 = word2.toLowerCase();
